@@ -61,9 +61,7 @@ def radius_statistics(contour, centre):
     # compute the radii
     radii = [contour_point_distance(point[0], centre) for point in contour]
     radii = pd.DataFrame(radii)
-    print(radii)
 
     # get the standard deviation
     standard_deviation = radii.std()
-    print(standard_deviation)
     return standard_deviation
