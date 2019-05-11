@@ -1,3 +1,4 @@
+import cv2
 import math
 import numpy as np
 from matplotlib import pyplot as plt
@@ -5,6 +6,43 @@ import pandas as pd
 
 # raise divide by zero errors
 np.seterr(divide='raise')
+
+def calculate_roundness(contour, centre):
+    # lazy approach, assuming all points have equal angle
+    angle = 2 * math.pi / len(contour)
+    R = 0
+    a = 0
+    b = 0
+
+    sin = math.sin(angle)
+    cos = math.cos(angle)
+    print('sin: ' + str(sin))
+    print('cos: ' + str(cos))
+    for point in contour:
+        r = contour_point_distance(point[0], centre)
+        R = R + r
+        a = a + r * cos
+        b = b + r * sin
+
+    R = R / len(contour)
+    a = a * 2 / len(contour)
+    b = b * 2 / len(contour)
+    print('R: ' + str(R))
+    print('a: ' + str(a))
+    print('b: ' + str(b))
+
+    deviation = 0
+    for point in contour:
+        r = contour_point_distance(point[0], centre)
+        deviation = deviation + r - R - a * cos - b * sin
+
+    return deviation / len(contour)
+
+def calculate_circularity(contour):
+    area = cv2.contourArea(contour)
+    perimeter = cv2.arcLength(contour, True)
+
+    return math.pow(perimeter, 2) / (4 * math.pi * area)
 
 def contour_point_distance(point1, point2):
     return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
@@ -41,6 +79,27 @@ def closest_points(contour, centre):
 
     return closest
 
+def get_features(contour):
+    furthest = furthest_points(contour)
+
+    #centre = [abs(furthest[0][0] + furthest[1][0]) / 2, abs(furthest[0][1] + furthest[1][1]) / 2]
+    #centre, dtype=float)
+
+    # don't think we would need to interpret the centre as centre of mass
+    centre = get_centroid(contour)
+
+    closest = closest_points(contour, centre)
+
+    return (centre, furthest, closest)
+
+def get_centroid(contour):
+    centroid = [0, 0]
+    for point in contour:
+        centroid[0] = centroid[0] + point[0][0]
+        centroid[1] = centroid[1] + point[0][1]
+
+    return [point / len(contour) for point in centroid]
+
 def furthest_points(contour):
     # optimize this later
     furthest = []
@@ -65,3 +124,14 @@ def radius_statistics(contour, centre):
     # get the standard deviation
     standard_deviation = radii.std()
     return standard_deviation
+
+def radius_statistics2(contour, centre):
+    # compute the radii
+    radii = [contour_point_distance(point[0], centre) for point in contour]
+
+    # compute the absolute deltas
+    avgDelta = 0
+    for i in range(1, len(radii)):
+        avgDelta = avgDelta + abs(radii[i] - radii[i - 1])
+
+    return avgDelta / (len(radii) - 1)
