@@ -78,18 +78,24 @@ def detect_contour(img):
     contours, heirarchy = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     #contours, heirarchy = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    # find the contour with the largest area
-    min_contour = []
-    min_area = 999999999999999999999999999999999999999
+    # find the contour with the 2nd largest area
+    max_contour = []
+    second_max_contour = []
+    max_area = 0
+    second_max_area = 0
     for contour in contours:
         area = cv2.contourArea(contour)
-        if (area < min_area):
-            #TODO: add check for if the contour is just the imagine dimensions
-            min_area = area
-            min_contour = contour
+        if (area > second_max_area):
+            if (area > max_area):
+                second_max_area = max_area
+                second_max_contour = max_contour
+                max_area = area
+                max_contour = contour
+            else:
+                second_max_area = area
+                second_max_contour = contour
 
-
-    return min_contour
+    return max_contour
 
 def plot_contour(img, contour, closest, furthest):
     colour = (255, 0, 0)
