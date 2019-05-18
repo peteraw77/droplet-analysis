@@ -95,7 +95,7 @@ def detect_contour(img):
                 second_max_area = area
                 second_max_contour = contour
 
-    return max_contour
+    return second_max_contour
 
 def plot_contour(img, contour, closest, furthest):
     colour = (255, 0, 0)
