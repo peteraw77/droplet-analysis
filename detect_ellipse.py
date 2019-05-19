@@ -7,15 +7,15 @@ from analysis_tools import *
 import numpy as np
 
 def main():
-    ellipse_img = cv2.imread('ellipse.jpg')
+    ellipse_img = cv2.imread('images/ellipse.jpg')
     ellipse_img = cv2.copyMakeBorder(ellipse_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
     ellipse = detect_contour(ellipse_img)
 
-    circle_img = cv2.imread('circle.png')
+    circle_img = cv2.imread('images/circle.png')
     circle_img = cv2.copyMakeBorder(circle_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
     circle = detect_contour(circle_img)
 
-    bad_circle_img = cv2.imread('bad_circle.jpg')
+    bad_circle_img = cv2.imread('images/bad_circle.jpg')
     bad_circle_img = cv2.copyMakeBorder(bad_circle_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
     bad_circle = detect_contour(bad_circle_img)
 
