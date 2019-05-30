@@ -28,7 +28,6 @@ def contour_analysis(contour):
     centre, furthest, closest = get_features(contour)
 
     standard_deviation = radius_statistics(contour, centre)
-    #standard_deviation = radius_statistics2(contour, centre)
 
     return (furthest, centre, closest, standard_deviation)
 
@@ -38,7 +37,6 @@ def detect_contour(img):
     # detect the contours
     ret, threshold = cv2.threshold(gray, 127, 255, 0)
     contours, heirarchy = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    #contours, heirarchy = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # find the contour with the 2nd largest area
     max_contour = []

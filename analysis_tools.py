@@ -64,13 +64,8 @@ def closest_points(contour, centre):
             angle1 = math.atan2(point_vector[1], point_vector[0])
             angle2 = math.atan2(pair_vector[1], pair_vector[0])
 
-            #distance1 = contour_point_distance(point[0], centre)
-            #distance2 = contour_point_distance(centre, pair[0])
-            #total_distance = contour_point_distance(point[0], pair[0])
-
             #if point_length == pair_length and angle == math.pi:
             if angle1 == angle2:
-            #if distance1 + distance2 == total_distance:
                 distance = contour_point_distance(point[0], pair[0])
 
                 if distance < min_distance and distance > 0:
@@ -81,9 +76,6 @@ def closest_points(contour, centre):
 
 def get_features(contour):
     furthest = furthest_points(contour)
-
-    #centre = [abs(furthest[0][0] + furthest[1][0]) / 2, abs(furthest[0][1] + furthest[1][1]) / 2]
-    #centre, dtype=float)
 
     # don't think we would need to interpret the centre as centre of mass
     centre = get_centroid(contour)
