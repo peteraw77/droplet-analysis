@@ -8,6 +8,7 @@ from analysis_tools import *
 import numpy as np
 
 def main():
+    images = {}
     for image_file in os.listdir('./images'):
         img = cv2.imread('images/' + image_file)
         img = cv2.copyMakeBorder(img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
@@ -22,7 +23,9 @@ def main():
         # analysis
         circularity = calculate_circularity(contour)
 
-        print(circularity)
+        images[image_file] = circularity
+
+    print(images)
 
 def pad_img(img):
     whitespace = [[255, 255, 255], [255, 255, 255], [255, 255, 255]]
