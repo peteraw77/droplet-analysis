@@ -1,3 +1,4 @@
+import os
 import cv2
 import math
 import numpy as np
@@ -7,40 +8,21 @@ from analysis_tools import *
 import numpy as np
 
 def main():
-    ellipse_img = cv2.imread('images/ellipse.jpg')
-    ellipse_img = cv2.copyMakeBorder(ellipse_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-    ellipse = detect_contour(ellipse_img)
+    for image_file in os.listdir('./images'):
+        img = cv2.imread('images/' + image_file)
+        img = cv2.copyMakeBorder(img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+        contour = detect_contour(img)
+        edges = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 80, 160)
 
-    circle_img = cv2.imread('images/circle.png')
-    circle_img = cv2.copyMakeBorder(circle_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-    circle = detect_contour(circle_img)
+        plt.subplot(122)
+        plt.imshow(edges,cmap = 'gray')
+        plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
+        plt.show()
 
-    bad_circle_img = cv2.imread('images/bad_circle.jpg')
-    bad_circle_img = cv2.copyMakeBorder(bad_circle_img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-    bad_circle = detect_contour(bad_circle_img)
+        # analysis
+        circularity = calculate_circularity(contour)
 
-    # analysis
-    ellipse_furthest, ellipse_centre, ellipse_closest, ellipse_std = contour_analysis(ellipse)
-    #print(ellipse_std)
-
-    circle_furthest, circle_centre, circle_closest, circle_std = contour_analysis(circle)
-    #print(circle_std)
-
-    bad_circle_furthest, bad_circle_centre, bad_circle_closest, bad_circle_std = contour_analysis(bad_circle)
-    #print(bad_circle_std)
-
-    ellipse_circularity = calculate_circularity(ellipse)
-    circle_circularity = calculate_circularity(circle)
-    bad_circle_circularity = calculate_circularity(bad_circle)
-
-    print(ellipse_circularity)
-    print(circle_circularity)
-    print(bad_circle_circularity)
-
-    # plot em up
-    plot_contour(circle_img, circle, circle_closest, circle_furthest)
-    plot_contour(bad_circle_img, bad_circle, bad_circle_closest, bad_circle_furthest)
-    plot_contour(ellipse_img, ellipse, ellipse_closest, ellipse_furthest)
+        print(circularity)
 
 def pad_img(img):
     whitespace = [[255, 255, 255], [255, 255, 255], [255, 255, 255]]
@@ -94,6 +76,8 @@ def detect_contour(img):
             else:
                 second_max_area = area
                 second_max_contour = contour
+        print("Max area is: " + str(max_area))
+        print("Second max area is: " + str(second_max_area))
 
     return second_max_contour
 
