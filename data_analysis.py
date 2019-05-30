@@ -84,11 +84,9 @@ def detect_contour(img):
 
     return second_max_contour
 
-def plot_contour(img, contour, closest, furthest):
+def plot_contour(img, contour):
     colour = (255, 0, 0)
     img = cv2.drawContours(img, contour, -1, colour, 3)
-    img = cv2.line(img, closest[0], closest[1], colour)
-    img = cv2.line(img, furthest[0], furthest[1], colour)
     plt.imshow(img)
     plt.show()
 
