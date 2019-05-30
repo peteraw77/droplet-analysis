@@ -27,26 +27,6 @@ def main():
 
     print(images)
 
-def pad_img(img):
-    whitespace = [[255, 255, 255], [255, 255, 255], [255, 255, 255]]
-    new_img = [[whitespace for j in range(math.floor(len(img[0]) * 1.1))]
-            for i in range(math.floor(len(img) * 1.1))]
-    new_img = np.array(new_img)
-
-    for i in range(math.floor(len(img) * 1.1)):
-        for j in range(len(img[0] * 1.1)):
-            shift = i - math.floor(len(img) * 0.05)
-            if shift < 0 or shift > len(img) - 1:
-                new_img[i][j] = whitespace
-            else:
-                shjft = j - math.floor(len(img[0]) * 0.05)
-                if shjft < 0 or shjft > len(img[0]) - 1:
-                    new_img[i][j] = whitespace
-                else:
-                    new_img[i][j] = img[shift][shjft]
-
-    return new_img
-
 def contour_analysis(contour):
     centre, furthest, closest = get_features(contour)
 
