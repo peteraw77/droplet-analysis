@@ -12,13 +12,10 @@ def main():
     for image_file in os.listdir('./images'):
         img = cv2.imread('images/' + image_file)
         img = cv2.copyMakeBorder(img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
-        contour = detect_contour(img)
-        edges = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 80, 160)
 
-        plt.subplot(122)
-        plt.imshow(edges,cmap = 'gray')
-        plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
-        plt.show()
+        edges = cv2.Canny(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), 80, 160)
+        contour = detect_contour(img)
+        plot_edges(edges)
 
         # analysis
         circularity = calculate_circularity(contour)
@@ -68,6 +65,12 @@ def plot_contour(img, contour):
     colour = (255, 0, 0)
     img = cv2.drawContours(img, contour, -1, colour, 3)
     plt.imshow(img)
+    plt.show()
+
+def plot_edges(edges):
+    plt.subplot(122)
+    plt.imshow(edges,cmap = 'gray')
+    plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
     plt.show()
 
 if __name__ == '__main__':
