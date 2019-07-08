@@ -1,6 +1,7 @@
 import os
 import cv2
 import math
+import json
 import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -21,6 +22,8 @@ def main():
         images[image_file] = circularity
 
     print(images)
+    with open('./output.txt', 'w') as f:
+        f.write(json.dumps(images))
 
 def contour_analysis(contour):
     centre, furthest, closest = get_features(contour)
@@ -59,7 +62,6 @@ def detect_contour(img):
                 second_max_area = area
                 second_max_contour = contour
 
-    plot_contour(threshold, max_contour)
     return max_contour
 
 def plot_contour(img, contour):
@@ -70,7 +72,7 @@ def plot_contour(img, contour):
 
 def plot_edges(edges):
     plt.subplot(122)
-    plt.imshow(edges,cmap = 'gray')
+    plt.imshow()
     plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
     plt.show()
 
