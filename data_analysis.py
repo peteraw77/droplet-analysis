@@ -22,8 +22,7 @@ def main():
         images[image_file] = circularity
 
     print(images)
-    with open('./output.txt', 'w') as f:
-        f.write(json.dumps(images))
+    dump_scores(images)
 
 def contour_analysis(contour):
     centre, furthest, closest = get_features(contour)
@@ -31,6 +30,14 @@ def contour_analysis(contour):
     standard_deviation = radius_statistics(contour, centre)
 
     return (furthest, centre, closest, standard_deviation)
+
+def dump_scores(scores):
+    score_string = ''
+    for image_name,score in scores.items():
+        score_string = score_string + image_name + ': ' + str(score) + '\n'
+
+    with open('./output.txt', 'w') as f:
+        f.write(score_string)
 
 def detect_contour(img):
     # pre-process
