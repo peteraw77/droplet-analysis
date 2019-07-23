@@ -14,6 +14,9 @@ def main():
         img = cv2.imread('images/' + image_file)
         #img = cv2.copyMakeBorder(img, 100, 100, 100, 100, cv2.BORDER_CONSTANT, value=[255, 255, 255])
 
+        # crop the image
+        img = img[190:350, 165:480]
+
         contour = detect_contour(img)
 
         # analysis
@@ -42,7 +45,7 @@ def dump_scores(scores):
 def detect_contour(img):
     # pre-process
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret, threshold = cv2.threshold(gray, 95, 255, cv2.THRESH_BINARY)
+    ret, threshold = cv2.threshold(gray, 205, 255, cv2.THRESH_BINARY)
 
     # canny business
     #denoised = cv2.fastNlMeansDenoisingColored(img,None,10,10,7,21)
@@ -69,7 +72,8 @@ def detect_contour(img):
                 second_max_area = area
                 second_max_contour = contour
 
-    return max_contour
+    #plot_contour(threshold, second_max_contour)
+    return second_max_contour
 
 def plot_contour(img, contour):
     colour = (127, 127, 127)
